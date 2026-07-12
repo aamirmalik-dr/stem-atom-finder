@@ -1,0 +1,87 @@
+{
+  "images_per_dose": 5,
+  "tolerance_px": 4.0,
+  "margin_px": 8.0,
+  "rows": [
+    {
+      "dose": 1.0,
+      "log_fixed_f1": 0.8707,
+      "log_fixed_rmse_px": 0.8341,
+      "log_oracle_f1": 0.9803,
+      "log_oracle_rmse_px": 0.8704,
+      "log_oracle_threshold": 0.15,
+      "unet_f1": 0.9966,
+      "unet_rmse_px": 0.8159
+    },
+    {
+      "dose": 2.0,
+      "log_fixed_f1": 0.9214,
+      "log_fixed_rmse_px": 0.6234,
+      "log_oracle_f1": 0.9966,
+      "log_oracle_rmse_px": 0.632,
+      "log_oracle_threshold": 0.1,
+      "unet_f1": 0.9975,
+      "unet_rmse_px": 0.5947
+    },
+    {
+      "dose": 4.0,
+      "log_fixed_f1": 0.9799,
+      "log_fixed_rmse_px": 0.4465,
+      "log_oracle_f1": 0.9969,
+      "log_oracle_rmse_px": 0.4476,
+      "log_oracle_threshold": 0.1,
+      "unet_f1": 0.9969,
+      "unet_rmse_px": 0.4342
+    },
+    {
+      "dose": 8.0,
+      "log_fixed_f1": 0.9965,
+      "log_fixed_rmse_px": 0.3326,
+      "log_oracle_f1": 0.9984,
+      "log_oracle_rmse_px": 0.333,
+      "log_oracle_threshold": 0.1,
+      "unet_f1": 0.9984,
+      "unet_rmse_px": 0.3235
+    },
+    {
+      "dose": 30.0,
+      "log_fixed_f1": 0.9994,
+      "log_fixed_rmse_px": 0.2002,
+      "log_oracle_f1": 0.9994,
+      "log_oracle_rmse_px": 0.2002,
+      "log_oracle_threshold": 0.1,
+      "unet_f1": 0.9994,
+      "unet_rmse_px": 0.2047
+    },
+    {
+      "dose": 125.0,
+      "log_fixed_f1": 1.0,
+      "log_fixed_rmse_px": 0.1276,
+      "log_oracle_f1": 1.0,
+      "log_oracle_rmse_px": 0.1276,
+      "log_oracle_threshold": 0.1,
+      "unet_f1": 1.0,
+      "unet_rmse_px": 0.1314
+    },
+    {
+      "dose": 500.0,
+      "log_fixed_f1": 0.9997,
+      "log_fixed_rmse_px": 0.0874,
+      "log_oracle_f1": 0.9997,
+      "log_oracle_rmse_px": 0.0874,
+      "log_oracle_threshold": 0.1,
+      "unet_f1": 0.9997,
+      "unet_rmse_px": 0.0918
+    },
+    {
+      "dose": 2000.0,
+      "log_fixed_f1": 0.9997,
+      "log_fixed_rmse_px": 0.0756,
+      "log_oracle_f1": 0.9997,
+      "log_oracle_rmse_px": 0.0756,
+      "log_oracle_threshold": 0.1,
+      "unet_f1": 0.9997,
+      "unet_rmse_px": 0.0796
+    }
+  ]
+}
