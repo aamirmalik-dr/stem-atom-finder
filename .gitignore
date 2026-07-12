@@ -1,0 +1,29 @@
+# Environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+build/
+dist/
+
+# Large or regenerable data: full datasets stay out, the committed
+# synthetic samples in data/sample/ stay in.
+data/*
+!data/README.md
+!data/sample/
+data/sample/*
+!data/sample/*.npz
+
+# Large checkpoints stay out; the small committed model stays in.
+checkpoints/
+*.ckpt
+
+# Editor and OS noise
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
