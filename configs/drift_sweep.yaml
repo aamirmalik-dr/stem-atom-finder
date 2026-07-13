@@ -1,0 +1,18 @@
+name: drift_sweep
+mode: sweep
+title: Detector performance vs slow sample drift (dose 125)
+sweep:
+  parameter: drift_px
+  values: [0.0, 2.0, 4.0, 8.0, 16.0]
+base_config:
+  size: 256
+  lattice: hexagonal
+  spacing: 14.0
+  dose: 125.0
+  drift_angle_deg: 35.0
+images_per_condition: 5
+seed: 40
+refine: com
+methods: [log, ncc, unet]
+models:
+  unet: models/unet_seg.pt

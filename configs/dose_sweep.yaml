@@ -1,0 +1,23 @@
+name: dose_sweep
+mode: sweep
+title: Detector performance vs electron dose (5% brighter dopant columns)
+sweep:
+  parameter: dose
+  values: [1, 2, 4, 8, 30, 125, 500, 2000]
+base_config:
+  size: 256
+  lattice: hexagonal
+  spacing: 14.0
+  # Dopants make the intensity distribution bimodal, which is what breaks
+  # detectors whose threshold is relative to the brightest response.
+  dopant_fraction: 0.05
+images_per_condition: 5
+seed: 10
+tolerance: 4.0
+margin: 8.0
+refine: com
+methods: [log, localmax, ncc, unet, unet_reg]
+oracle: [log]
+models:
+  unet: models/unet_seg.pt
+  unet_reg: models/unet_reg.pt

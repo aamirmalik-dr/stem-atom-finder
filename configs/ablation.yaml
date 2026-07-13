@@ -1,0 +1,25 @@
+name: ablation
+mode: sweep
+title: Domain-randomization ablation (segmentation U-Net) vs dose
+sweep:
+  parameter: dose
+  values: [1, 2, 4, 8, 30, 125, 500, 2000]
+base_config:
+  size: 256
+  lattice: hexagonal
+  spacing: 14.0
+images_per_condition: 5
+seed: 10
+refine: com
+methods:
+  - "unet@full"
+  - "unet@fixed_dose"
+  - "unet@fixed_geometry"
+  - "unet@no_defects"
+  - "unet@no_scan_artifacts"
+models:
+  "unet@full": models/ablation/full.pt
+  "unet@fixed_dose": models/ablation/fixed_dose.pt
+  "unet@fixed_geometry": models/ablation/fixed_geometry.pt
+  "unet@no_defects": models/ablation/no_defects.pt
+  "unet@no_scan_artifacts": models/ablation/no_scan_artifacts.pt

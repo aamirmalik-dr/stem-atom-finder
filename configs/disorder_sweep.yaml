@@ -1,0 +1,17 @@
+name: disorder_sweep
+mode: sweep
+title: Detector performance vs static positional disorder (dose 30)
+sweep:
+  parameter: displacement_sigma
+  values: [0.1, 0.3, 0.5, 0.8, 1.2]
+base_config:
+  size: 256
+  lattice: hexagonal
+  spacing: 14.0
+  dose: 30.0
+images_per_condition: 5
+seed: 20
+refine: com
+methods: [log, ncc, unet]
+models:
+  unet: models/unet_seg.pt

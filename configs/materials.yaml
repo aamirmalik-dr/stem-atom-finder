@@ -1,0 +1,12 @@
+name: materials
+mode: materials
+presets: [graphene, mos2, srtio3, fcc110]
+base_config:
+  size: 256
+  dose: 125.0
+images_per_condition: 5
+seed: 70
+refine: com
+methods: [log, ncc, unet]
+models:
+  unet: models/unet_seg.pt

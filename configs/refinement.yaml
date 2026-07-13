@@ -1,0 +1,12 @@
+name: refinement
+mode: refinement
+sweep:
+  parameter: dose
+  values: [8, 30, 125, 500, 2000]
+base_config:
+  size: 256
+  lattice: hexagonal
+  spacing: 14.0
+images_per_condition: 5
+seed: 60
+refiners: [none, com, gauss]
