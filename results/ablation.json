@@ -1,0 +1,310 @@
+{
+  "mode": "sweep",
+  "parameter": "dose",
+  "rows": [
+    {
+      "dose": 1,
+      "unet@full": {
+        "f1": 0.9959004263224319,
+        "precision": 0.9943296277258462,
+        "recall": 0.9974822555205047,
+        "rmse_px": 0.8615755114741731
+      },
+      "unet@fixed_dose": {
+        "f1": 0.7917198132433213,
+        "precision": 0.6675758423379758,
+        "recall": 0.9735440708116225,
+        "rmse_px": 0.95664872152992
+      },
+      "unet@fixed_geometry": {
+        "f1": 0.9617675387818192,
+        "precision": 0.9953479622827965,
+        "recall": 0.9345682176656152,
+        "rmse_px": 0.8276377295224545
+      },
+      "unet@no_defects": {
+        "f1": 0.9747772466713194,
+        "precision": 0.9531415313225338,
+        "recall": 0.9974822555205047,
+        "rmse_px": 0.8821007422671613
+      },
+      "unet@no_scan_artifacts": {
+        "f1": 0.9949644646449085,
+        "precision": 0.9924644477820307,
+        "recall": 0.9974822555205047,
+        "rmse_px": 0.8547218509613209
+      }
+    },
+    {
+      "dose": 2,
+      "unet@full": {
+        "f1": 0.9972385855268664,
+        "precision": 0.9951028982602047,
+        "recall": 0.999388379204893,
+        "rmse_px": 0.5950157107672384
+      },
+      "unet@fixed_dose": {
+        "f1": 0.8958668743093984,
+        "precision": 0.812971993716008,
+        "recall": 0.9981382693319549,
+        "rmse_px": 0.639817968254179
+      },
+      "unet@fixed_geometry": {
+        "f1": 0.9547911667888167,
+        "precision": 0.9951028982602047,
+        "recall": 0.929356833463568,
+        "rmse_px": 0.583984168944032
+      },
+      "unet@no_defects": {
+        "f1": 0.9953758315233363,
+        "precision": 0.9914002657407639,
+        "recall": 0.999388379204893,
+        "rmse_px": 0.611278988740221
+      },
+      "unet@no_scan_artifacts": {
+        "f1": 0.9956945200941634,
+        "precision": 0.9920308273191376,
+        "recall": 0.999388379204893,
+        "rmse_px": 0.5971131678567504
+      }
+    },
+    {
+      "dose": 4,
+      "unet@full": {
+        "f1": 0.9959535500012595,
+        "precision": 0.9956129633741151,
+        "recall": 0.9963124673554121,
+        "rmse_px": 0.435544874048834
+      },
+      "unet@fixed_dose": {
+        "f1": 0.964471596687653,
+        "precision": 0.9347944949535785,
+        "recall": 0.9963124673554121,
+        "rmse_px": 0.46136672163171405
+      },
+      "unet@fixed_geometry": {
+        "f1": 0.990390471689366,
+        "precision": 0.9954708793355852,
+        "recall": 0.9855188165617614,
+        "rmse_px": 0.44785699385032435
+      },
+      "unet@no_defects": {
+        "f1": 0.9956405843527278,
+        "precision": 0.9949938904063108,
+        "recall": 0.9963124673554121,
+        "rmse_px": 0.4538213825595466
+      },
+      "unet@no_scan_artifacts": {
+        "f1": 0.9959535500012595,
+        "precision": 0.9956129633741151,
+        "recall": 0.9963124673554121,
+        "rmse_px": 0.4371341040579552
+      }
+    },
+    {
+      "dose": 8,
+      "unet@full": {
+        "f1": 0.9968685083566218,
+        "precision": 0.995003686227176,
+        "recall": 0.9987411300139545,
+        "rmse_px": 0.3280317934821432
+      },
+      "unet@fixed_dose": {
+        "f1": 0.9900363387165431,
+        "precision": 0.9815267214655581,
+        "recall": 0.9987411300139545,
+        "rmse_px": 0.34101825233852384
+      },
+      "unet@fixed_geometry": {
+        "f1": 0.9968685083566218,
+        "precision": 0.995003686227176,
+        "recall": 0.9987411300139545,
+        "rmse_px": 0.3296260075199994
+      },
+      "unet@no_defects": {
+        "f1": 0.9971905644968626,
+        "precision": 0.9956467596168826,
+        "recall": 0.9987411300139545,
+        "rmse_px": 0.3331519566746075
+      },
+      "unet@no_scan_artifacts": {
+        "f1": 0.9968685083566218,
+        "precision": 0.995003686227176,
+        "recall": 0.9987411300139545,
+        "rmse_px": 0.3284291966111675
+      }
+    },
+    {
+      "dose": 30,
+      "unet@full": {
+        "f1": 0.9990540599457256,
+        "precision": 0.9987360980771918,
+        "recall": 0.999375,
+        "rmse_px": 0.2039573701321038
+      },
+      "unet@fixed_dose": {
+        "f1": 0.9990540599457256,
+        "precision": 0.9987360980771918,
+        "recall": 0.999375,
+        "rmse_px": 0.2067986509313763
+      },
+      "unet@fixed_geometry": {
+        "f1": 0.9993730392120733,
+        "precision": 0.9993730407523511,
+        "recall": 0.999375,
+        "rmse_px": 0.2048757717516355
+      },
+      "unet@no_defects": {
+        "f1": 0.9990540599457256,
+        "precision": 0.9987360980771918,
+        "recall": 0.999375,
+        "rmse_px": 0.20749017917086204
+      },
+      "unet@no_scan_artifacts": {
+        "f1": 0.9990540599457256,
+        "precision": 0.9987360980771918,
+        "recall": 0.999375,
+        "rmse_px": 0.2082447472200069
+      }
+    },
+    {
+      "dose": 125,
+      "unet@full": {
+        "f1": 0.9993788804899513,
+        "precision": 0.998759686941138,
+        "recall": 1.0,
+        "rmse_px": 0.12483600530954256
+      },
+      "unet@fixed_dose": {
+        "f1": 0.9993788804899513,
+        "precision": 0.998759686941138,
+        "recall": 1.0,
+        "rmse_px": 0.12571050271864564
+      },
+      "unet@fixed_geometry": {
+        "f1": 0.9993788804899513,
+        "precision": 0.998759686941138,
+        "recall": 1.0,
+        "rmse_px": 0.126066121752975
+      },
+      "unet@no_defects": {
+        "f1": 0.9993788804899513,
+        "precision": 0.998759686941138,
+        "recall": 1.0,
+        "rmse_px": 0.1272471109435877
+      },
+      "unet@no_scan_artifacts": {
+        "f1": 0.9993788804899513,
+        "precision": 0.998759686941138,
+        "recall": 1.0,
+        "rmse_px": 0.12821111414492933
+      }
+    },
+    {
+      "dose": 500,
+      "unet@full": {
+        "f1": 0.9996899224806202,
+        "precision": 0.9993808049535604,
+        "recall": 1.0,
+        "rmse_px": 0.09153872354162948
+      },
+      "unet@fixed_dose": {
+        "f1": 0.9996899224806202,
+        "precision": 0.9993808049535604,
+        "recall": 1.0,
+        "rmse_px": 0.09022815747650412
+      },
+      "unet@fixed_geometry": {
+        "f1": 0.9996899224806202,
+        "precision": 0.9993808049535604,
+        "recall": 1.0,
+        "rmse_px": 0.09260604411983656
+      },
+      "unet@no_defects": {
+        "f1": 0.9996899224806202,
+        "precision": 0.9993808049535604,
+        "recall": 1.0,
+        "rmse_px": 0.09231969363487744
+      },
+      "unet@no_scan_artifacts": {
+        "f1": 0.9996899224806202,
+        "precision": 0.9993808049535604,
+        "recall": 1.0,
+        "rmse_px": 0.09267314381996122
+      }
+    },
+    {
+      "dose": 2000,
+      "unet@full": {
+        "f1": 0.9996860282574568,
+        "precision": 0.9993730407523511,
+        "recall": 1.0,
+        "rmse_px": 0.07755007570915697
+      },
+      "unet@fixed_dose": {
+        "f1": 0.9996860282574568,
+        "precision": 0.9993730407523511,
+        "recall": 1.0,
+        "rmse_px": 0.07675605850530937
+      },
+      "unet@fixed_geometry": {
+        "f1": 0.9996860282574568,
+        "precision": 0.9993730407523511,
+        "recall": 1.0,
+        "rmse_px": 0.07769536612576064
+      },
+      "unet@no_defects": {
+        "f1": 0.9996860282574568,
+        "precision": 0.9993730407523511,
+        "recall": 1.0,
+        "rmse_px": 0.0778030785949572
+      },
+      "unet@no_scan_artifacts": {
+        "f1": 0.9996860282574568,
+        "precision": 0.9993730407523511,
+        "recall": 1.0,
+        "rmse_px": 0.0790181743246396
+      }
+    }
+  ],
+  "config": {
+    "name": "ablation",
+    "mode": "sweep",
+    "title": "Domain-randomization ablation (segmentation U-Net) vs dose",
+    "sweep": {
+      "parameter": "dose",
+      "values": [
+        1,
+        2,
+        4,
+        8,
+        30,
+        125,
+        500,
+        2000
+      ]
+    },
+    "base_config": {
+      "size": 256,
+      "lattice": "hexagonal",
+      "spacing": 14.0
+    },
+    "images_per_condition": 5,
+    "seed": 10,
+    "refine": "com",
+    "methods": [
+      "unet@full",
+      "unet@fixed_dose",
+      "unet@fixed_geometry",
+      "unet@no_defects",
+      "unet@no_scan_artifacts"
+    ],
+    "models": {
+      "unet@full": "models/ablation/full.pt",
+      "unet@fixed_dose": "models/ablation/fixed_dose.pt",
+      "unet@fixed_geometry": "models/ablation/fixed_geometry.pt",
+      "unet@no_defects": "models/ablation/no_defects.pt",
+      "unet@no_scan_artifacts": "models/ablation/no_scan_artifacts.pt"
+    }
+  }
+}

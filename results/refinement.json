@@ -1,0 +1,67 @@
+{
+  "mode": "refinement",
+  "parameter": "dose",
+  "refiners": [
+    "none",
+    "com",
+    "gauss"
+  ],
+  "rows": [
+    {
+      "dose": 8,
+      "none": 0.40820271685360365,
+      "com": 0.25012210424732734,
+      "gauss": 0.3218356970950747
+    },
+    {
+      "dose": 30,
+      "none": 0.40208850043180655,
+      "com": 0.17445820637302786,
+      "gauss": 0.16541777090082835
+    },
+    {
+      "dose": 125,
+      "none": 0.4092859714621582,
+      "com": 0.11696160325465446,
+      "gauss": 0.08181673146533387
+    },
+    {
+      "dose": 500,
+      "none": 0.40713231395206345,
+      "com": 0.08399450111327439,
+      "gauss": 0.04405084765444699
+    },
+    {
+      "dose": 2000,
+      "none": 0.4084653311662404,
+      "com": 0.07470123017368505,
+      "gauss": 0.030834134207821124
+    }
+  ],
+  "config": {
+    "name": "refinement",
+    "mode": "refinement",
+    "sweep": {
+      "parameter": "dose",
+      "values": [
+        8,
+        30,
+        125,
+        500,
+        2000
+      ]
+    },
+    "base_config": {
+      "size": 256,
+      "lattice": "hexagonal",
+      "spacing": 14.0
+    },
+    "images_per_condition": 5,
+    "seed": 60,
+    "refiners": [
+      "none",
+      "com",
+      "gauss"
+    ]
+  }
+}

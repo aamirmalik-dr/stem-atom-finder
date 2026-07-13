@@ -2,58 +2,76 @@
   "tolerance_px": 4.0,
   "margin_px": 8.0,
   "samples": {
-    "high_dose": {
+    "graphene_d50": {
       "log": {
-        "n_true": 320,
-        "n_pred": 320,
+        "n_true": 293,
+        "n_pred": 293,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
-        "rmse_px": 0.0859
+        "rmse_px": 0.2064
       },
       "unet": {
-        "n_true": 320,
-        "n_pred": 320,
+        "n_true": 293,
+        "n_pred": 293,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
-        "rmse_px": 0.0911
+        "rmse_px": 0.2188
       }
     },
-    "mid_dose": {
+    "mos2_d50": {
       "log": {
-        "n_true": 318,
-        "n_pred": 318,
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "rmse_px": 0.2014
+        "n_true": 271,
+        "n_pred": 266,
+        "precision": 0.9962,
+        "recall": 0.9779,
+        "f1": 0.987,
+        "rmse_px": 0.2664
       },
       "unet": {
-        "n_true": 318,
-        "n_pred": 318,
-        "precision": 1.0,
+        "n_true": 271,
+        "n_pred": 277,
+        "precision": 0.9783,
         "recall": 1.0,
-        "f1": 1.0,
-        "rmse_px": 0.2083
+        "f1": 0.9891,
+        "rmse_px": 0.2654
       }
     },
-    "low_dose": {
+    "srtio3_d125": {
       "log": {
-        "n_true": 318,
-        "n_pred": 301,
-        "precision": 0.9967,
-        "recall": 0.9434,
-        "f1": 0.9693,
-        "rmse_px": 0.6433
+        "n_true": 706,
+        "n_pred": 355,
+        "precision": 1.0,
+        "recall": 0.5028,
+        "f1": 0.6692,
+        "rmse_px": 0.2313
       },
       "unet": {
-        "n_true": 318,
-        "n_pred": 319,
-        "precision": 0.9969,
+        "n_true": 706,
+        "n_pred": 721,
+        "precision": 0.8419,
+        "recall": 0.8598,
+        "f1": 0.8507,
+        "rmse_px": 0.8406
+      }
+    },
+    "fcc110_d10": {
+      "log": {
+        "n_true": 397,
+        "n_pred": 398,
+        "precision": 0.9975,
         "recall": 1.0,
-        "f1": 0.9984,
-        "rmse_px": 0.5996
+        "f1": 0.9987,
+        "rmse_px": 0.3883
+      },
+      "unet": {
+        "n_true": 397,
+        "n_pred": 398,
+        "precision": 0.9975,
+        "recall": 1.0,
+        "f1": 0.9987,
+        "rmse_px": 0.366
       }
     }
   }

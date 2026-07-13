@@ -1,0 +1,143 @@
+{
+  "mode": "sweep",
+  "parameter": "displacement_sigma",
+  "rows": [
+    {
+      "displacement_sigma": 0.1,
+      "log": {
+        "f1": 0.9996820349761526,
+        "precision": 1.0,
+        "recall": 0.9993650793650793,
+        "rmse_px": 0.21204761586278006
+      },
+      "ncc": {
+        "f1": 0.9996820349761526,
+        "precision": 1.0,
+        "recall": 0.9993650793650793,
+        "rmse_px": 0.20547961014431343
+      },
+      "unet": {
+        "f1": 0.9996820349761526,
+        "precision": 1.0,
+        "recall": 0.9993650793650793,
+        "rmse_px": 0.20734078823675625
+      }
+    },
+    {
+      "displacement_sigma": 0.3,
+      "log": {
+        "f1": 0.999037660305266,
+        "precision": 0.9987256493506493,
+        "recall": 0.9993506493506494,
+        "rmse_px": 0.2099744304884911
+      },
+      "ncc": {
+        "f1": 0.999037660305266,
+        "precision": 0.9987256493506493,
+        "recall": 0.9993506493506494,
+        "rmse_px": 0.20339046191372448
+      },
+      "unet": {
+        "f1": 0.999037660305266,
+        "precision": 0.9987256493506493,
+        "recall": 0.9993506493506494,
+        "rmse_px": 0.20723592077844505
+      }
+    },
+    {
+      "displacement_sigma": 0.5,
+      "log": {
+        "f1": 0.9993730392120733,
+        "precision": 0.9993730407523511,
+        "recall": 0.999375,
+        "rmse_px": 0.21219854744249728
+      },
+      "ncc": {
+        "f1": 0.9993730392120733,
+        "precision": 0.9993730407523511,
+        "recall": 0.999375,
+        "rmse_px": 0.20625159368672247
+      },
+      "unet": {
+        "f1": 0.9993730392120733,
+        "precision": 0.9993730407523511,
+        "recall": 0.999375,
+        "rmse_px": 0.20863744805826565
+      }
+    },
+    {
+      "displacement_sigma": 0.8,
+      "log": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "rmse_px": 0.21731351328007706
+      },
+      "ncc": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "rmse_px": 0.21432210295662193
+      },
+      "unet": {
+        "f1": 0.9996850393700788,
+        "precision": 0.9993710691823899,
+        "recall": 1.0,
+        "rmse_px": 0.21630973664961967
+      }
+    },
+    {
+      "displacement_sigma": 1.2,
+      "log": {
+        "f1": 0.999375950738077,
+        "precision": 0.9987538457059115,
+        "recall": 1.0,
+        "rmse_px": 0.29019619035663086
+      },
+      "ncc": {
+        "f1": 0.999375950738077,
+        "precision": 0.9987538457059115,
+        "recall": 1.0,
+        "rmse_px": 0.283413378926313
+      },
+      "unet": {
+        "f1": 0.9990668332110172,
+        "precision": 0.9981384728511167,
+        "recall": 1.0,
+        "rmse_px": 0.3007278148003064
+      }
+    }
+  ],
+  "config": {
+    "name": "disorder_sweep",
+    "mode": "sweep",
+    "title": "Detector performance vs static positional disorder (dose 30)",
+    "sweep": {
+      "parameter": "displacement_sigma",
+      "values": [
+        0.1,
+        0.3,
+        0.5,
+        0.8,
+        1.2
+      ]
+    },
+    "base_config": {
+      "size": 256,
+      "lattice": "hexagonal",
+      "spacing": 14.0,
+      "dose": 30.0
+    },
+    "images_per_condition": 5,
+    "seed": 20,
+    "refine": "com",
+    "methods": [
+      "log",
+      "ncc",
+      "unet"
+    ],
+    "models": {
+      "unet": "models/unet_seg.pt"
+    }
+  }
+}
