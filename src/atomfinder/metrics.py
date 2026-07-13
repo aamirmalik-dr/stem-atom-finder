@@ -40,18 +40,24 @@ class DetectionResult:
     matches: np.ndarray
 
 
-def filter_margin(points: np.ndarray, shape: tuple[int, int], margin: float) -> np.ndarray:
-    """Drop points within `margin` pixels of the image border."""
+def margin_mask(points: np.ndarray, shape: tuple[int, int], margin: float) -> np.ndarray:
+    """Return a boolean mask of points at least `margin` px from the border."""
     if len(points) == 0:
-        return points
+        return np.zeros(0, dtype=bool)
     h, w = shape
-    ok = (
+    return (
         (points[:, 0] >= margin)
         & (points[:, 0] <= h - 1 - margin)
         & (points[:, 1] >= margin)
         & (points[:, 1] <= w - 1 - margin)
     )
-    return points[ok]
+
+
+def filter_margin(points: np.ndarray, shape: tuple[int, int], margin: float) -> np.ndarray:
+    """Drop points within `margin` pixels of the image border."""
+    if len(points) == 0:
+        return points
+    return points[margin_mask(points, shape, margin)]
 
 
 def match_positions(
@@ -92,3 +98,38 @@ def match_positions(
         else float("nan")
     )
     return DetectionResult(n_true, n_pred, n_matched, precision, recall, f1, rmse, matches)
+
+
+def per_species_recall(
+    true_positions: np.ndarray,
+    species: np.ndarray,
+    species_names: tuple[str, ...],
+    pred_positions: np.ndarray,
+    tolerance: float = 4.0,
+) -> dict[str, float]:
+    """Compute recall separately for each column species.
+
+    Detections are matched to the full ground truth first (one-to-one),
+    then matched truths are grouped by species, so a faint species cannot
+    borrow matches from a bright neighbour.
+
+    Args:
+        true_positions: (N, 2) ground-truth positions as (row, col).
+        species: (N,) int array indexing species_names.
+        species_names: Species labels.
+        pred_positions: (M, 2) predicted positions as (row, col).
+        tolerance: Maximum centre distance in pixels for a true positive.
+
+    Returns:
+        Mapping of species name to recall (NaN if the species is absent).
+    """
+    result = match_positions(true_positions, pred_positions, tolerance)
+    matched_true = set(result.matches[:, 0].tolist())
+    recalls: dict[str, float] = {}
+    for sid, name in enumerate(species_names):
+        idx = np.flatnonzero(species == sid)
+        if len(idx) == 0:
+            recalls[name] = float("nan")
+        else:
+            recalls[name] = float(sum(int(i) in matched_true for i in idx) / len(idx))
+    return recalls

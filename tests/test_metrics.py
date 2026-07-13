@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from atomfinder.metrics import filter_margin, match_positions
+from atomfinder.metrics import filter_margin, margin_mask, match_positions, per_species_recall
 
 
 def test_perfect_match():
@@ -62,8 +62,29 @@ def test_rmse_reflects_position_error():
     assert np.isclose(res.rmse, 1.0)
 
 
-def test_filter_margin():
+def test_filter_margin_and_mask():
     pts = np.array([[2.0, 50.0], [50.0, 50.0], [50.0, 98.0]])
+    mask = margin_mask(pts, (100, 100), margin=8.0)
+    np.testing.assert_array_equal(mask, [False, True, False])
     kept = filter_margin(pts, (100, 100), margin=8.0)
     assert len(kept) == 1
     np.testing.assert_array_equal(kept[0], [50.0, 50.0])
+
+
+def test_per_species_recall():
+    true = np.array([[10.0, 10.0], [30.0, 30.0], [50.0, 50.0]])
+    species = np.array([0, 0, 1])
+    # Both species-0 columns detected, the species-1 column missed.
+    pred = np.array([[10.2, 10.0], [30.0, 29.8]])
+    recalls = per_species_recall(true, species, ("bright", "faint"), pred, tolerance=2.0)
+    assert recalls["bright"] == 1.0
+    assert recalls["faint"] == 0.0
+
+
+def test_per_species_recall_absent_species_is_nan():
+    true = np.array([[10.0, 10.0]])
+    recalls = per_species_recall(
+        true, np.array([0]), ("a", "b"), np.array([[10.0, 10.0]]), tolerance=2.0
+    )
+    assert recalls["a"] == 1.0
+    assert np.isnan(recalls["b"])
