@@ -1,75 +1,102 @@
 # stem-atom-finder
 
-Atomic column detection in simulated HAADF-STEM images, comparing a classical
-Laplacian-of-Gaussian detector against a 30k-parameter U-Net across a 2000x
-range of electron dose. Everything runs on CPU in minutes, from a fully
-synthetic, license-clean simulator with exact ground truth.
+A benchmark and toolkit for atomic column detection in HAADF-STEM images.
+It ships a physics-motivated simulator with four materials presets and
+exact ground truth, five detectors (three classical, two learned), two
+sub-pixel refiners, and a config-driven benchmark harness that answers the
+questions a microscopist actually asks: which detector, at what dose, on
+which material, with what threshold, and how well localised. Everything
+runs on CPU; every committed number regenerates from a fixed-seed YAML
+config.
 
-## Results
+![One field of graphene swept from dose 2000 down to 1 count per column peak, U-Net detections overlaid](figures/dose_ladder.gif)
 
-Detection F1 versus dose (mean electron counts at a column peak), 5 images per
-dose, Hungarian matching at 4 px tolerance. Produced by
-`scripts/benchmark_dose.py`, stored in `results/dose_sweep.json`.
+![The four materials presets, clean and dose-limited](figures/preset_gallery.png)
 
-| Dose | LoG, fixed threshold | LoG, oracle-tuned per dose | U-Net, fixed threshold | U-Net position RMSE (px) |
+## Headline results
+
+Full tables and readings in [RESULTS.md](RESULTS.md); raw values in
+`results/*.json`. Four findings, measured, not asserted:
+
+**1. Below dose 30, detectors separate; the U-Net leads.** On a doped
+lattice (5% brighter substitutional columns), detection F1 at each
+method's fixed default threshold:
+
+| Dose (counts/peak) | LoG | Local max | NCC | U-Net (seg) |
 |---|---|---|---|---|
-| 1 | 0.871 | 0.980 | 0.997 | 0.82 |
-| 2 | 0.921 | 0.997 | 0.998 | 0.59 |
-| 4 | 0.980 | 0.997 | 0.997 | 0.43 |
-| 8 | 0.997 | 0.998 | 0.998 | 0.32 |
-| 30 | 0.999 | 0.999 | 0.999 | 0.20 |
-| 125 | 1.000 | 1.000 | 1.000 | 0.13 |
-| 500 | 1.000 | 1.000 | 1.000 | 0.09 |
-| 2000 | 1.000 | 1.000 | 1.000 | 0.08 |
+| 1 | 0.812 | 0.922 | 0.053 | **0.945** |
+| 4 | 0.914 | 0.991 | 0.550 | **0.995** |
+| 8 | 0.958 | 0.995 | 0.962 | **0.997** |
+| 30 | 0.997 | 0.998 | 0.998 | 0.998 |
 
-![Detection overlay: ground truth, LoG and U-Net detections at three doses](figures/detection_overlay.png)
+**2. The threshold story is about defaults, not retuning.** An earlier
+version of this repository framed the U-Net's advantage as robustness of a
+single fixed threshold versus per-dose retuning. The operating-point
+analysis (`configs/operating_point.yaml`) sharpens that: for every method
+there exists one fixed threshold that is within 0.001 mean F1 of per-dose
+oracle tuning. What separates methods is the level of that curve (LoG
+0.969, NCC 0.980, local max 0.990, U-Net 0.991 mean F1) and how far the
+shipped default sits from the good fixed point: NCC's textbook default
+threshold costs it 0.93 F1 at dose 1.
 
-![F1 and position RMSE versus dose for the three detectors](figures/dose_sweep.png)
+**3. Faint species are where learning earns its keep.** On the SrTiO3
+[001] preset the pure-oxygen columns carry 7% of the Sr column weight.
+Both classical detectors miss every one of them (recall 0.000, they only
+report cations). The U-Net recovers 63.5% of O columns, paying with
+precision (0.805 vs 0.999). The benchmark reports both sides of that
+trade.
 
-Three findings, stated plainly:
+| SrTiO3, dose 125 | F1 | Sr recall | TiO recall | O recall |
+|---|---|---|---|---|
+| LoG | 0.666 | 0.999 | 0.999 | 0.000 |
+| NCC template | 0.666 | 0.999 | 0.999 | 0.000 |
+| U-Net (seg) | **0.811** | 1.000 | 0.999 | **0.635** |
 
-- At moderate to high dose the problem is easy and every method is
-  essentially perfect, with sub-pixel position accuracy down to 0.08 px RMSE
-  after centre-of-mass refinement.
-- The classical detector's weakness is not detection power but parameter
-  sensitivity. With one fixed threshold it falls to F1 0.871 at dose 1; given
-  an oracle that retunes its threshold at every dose using ground truth, it
-  recovers to 0.980.
-- The U-Net runs with a single fixed threshold everywhere and still delivers
-  0.997 at dose 1, slightly ahead of even the oracle-tuned baseline. Its
-  practical advantage is robustness across imaging conditions without
-  retuning, not a large accuracy gap.
+**4. Gaussian fitting is worth it exactly when photons allow.** Isolating
+the sub-pixel refiners from detection (integer-pixel starts from ground
+truth): 2D Gaussian least-squares reaches 0.031 px RMSE at dose 2000,
+beating centre of mass (0.075 px) by 2.4x, but loses to it in the
+noise-dominated regime (0.322 vs 0.250 px at dose 8).
 
-The oracle comparison matters: benchmarks that pit a learned model against a
-classical method at one fixed, untuned setting overstate the learned model's
-advantage. Here the baseline is given every legitimate assist and the honest
-gap is reported.
+A fifth, for free: the domain-randomisation ablation shows dose
+randomisation is the load-bearing training component. Training the same
+U-Net at one fixed dose drops dose-1 F1 from 0.996 to 0.792
+(`configs/ablation.yaml`).
 
-## How it works
+## What is in the box
 
-**Simulator** (`atomfinder.sim`): hexagonal or square lattice with random
-rotation, column intensity scaling as Z^1.7 (incoherent Z-contrast), Gaussian
-probe blur, random vacancies, brighter substitutional dopants, static
-positional disorder, slow per-row scan jitter, and Poisson shot noise
-controlled by a single dose parameter. Ground-truth positions are tracked
-through the jitter distortion, so labels stay exact.
+**Simulator** (`atomfinder.sim`): arbitrary 2D projected crystals with a
+multi-species basis. Column weight is the sum of Z^1.7 over the column
+(incoherent Z-contrast), blurred by a Gaussian probe. Presets: graphene
+honeycomb, MoS2 monolayer (with sulfur monovacancies that halve the S2
+column weight), SrTiO3 [001] perovskite (Sr, Ti+O, and near-invisible O
+columns), FCC Pt [110]. Imperfections, each one config field: vacancies,
+substitutional dopants, static displacements, fast per-row scan jitter,
+slow sample drift accumulated down the frame, a documented two-term
+background (constant pedestal plus smooth low-frequency field), and
+Poisson noise set by one dose parameter. Ground truth is tracked through
+every distortion.
 
-**LoG baseline** (`atomfinder.detect`): multi-scale scale-normalised
-Laplacian of Gaussian with non-maximum suppression. No training.
+**Detectors** (`atomfinder.detect`, `atomfinder.net`): multi-scale
+Laplacian of Gaussian, smoothed local maxima, normalised cross-correlation
+against a Gaussian template, and two 29,641-parameter U-Nets (segmentation
+head with BCE, regression head with MSE) trained on freshly simulated
+images with full domain randomisation. Committed weights, 143 KB each.
 
-**U-Net** (`atomfinder.net`, `atomfinder.train`): two-level encoder-decoder,
-29,641 parameters, trained for 300 steps on freshly simulated images with
-randomised lattice, defect rates and dose (log-uniform 2 to 2000), so it
-never sees the same image twice. It predicts a per-pixel heatmap; peaks
-become detections. Training takes a few minutes on CPU.
+**Refiners** (`atomfinder.refine`): iterative centre of mass and 2D
+Gaussian least-squares fitting.
 
-**Scoring** (`atomfinder.metrics`): optimal one-to-one Hungarian matching
-within a 4 px tolerance, so a cluster of predictions cannot double-claim a
-single true column. Precision, recall, F1 and matched-pair position RMSE.
-All detections are refined to sub-pixel accuracy by iterative local centre
-of mass (`atomfinder.refine`) before scoring.
+**Metrics** (`atomfinder.metrics`): Hungarian one-to-one matching with a
+tolerance radius (no double-counting), precision/recall/F1, matched-pair
+RMSE, and per-species recall.
 
-## Install and reproduce
+**Benchmark harness** (`atomfinder.benchmark`): five modes driven by YAML
+configs with fixed seeds: parameter sweeps, precision-recall curves,
+operating-point analysis, refiner isolation, and per-material scoring.
+The nine committed configs in `configs/` regenerate every figure and
+table in this repository.
+
+## Install
 
 Python 3.11. CPU-only PyTorch is sufficient.
 
@@ -80,51 +107,65 @@ pip install torch --index-url https://download.pytorch.org/whl/cpu
 pip install -e ".[dev]"
 ```
 
-Run the demo on the three committed sample images (instant, uses the
-committed model weights):
+## Quickstart
 
 ```
-python scripts/demo.py
+atomfinder demo                                   # detect on the 4 committed samples
+atomfinder simulate --preset srtio3 --dose 30 --figure sto.png
+atomfinder detect data/sample/mos2_d50.npz --method unet --figure overlay.png
+atomfinder benchmark configs/dose_sweep.yaml      # any committed benchmark
+atomfinder train --steps 300                      # retrain the U-Net, ~minutes on CPU
 ```
 
-writes `results/metrics.json` and `figures/detection_overlay.png`. On the
-committed low-dose sample (dose 2), the run behind the committed figures
-gives LoG precision 0.997 / recall 0.943 / F1 0.969 and U-Net precision
-0.997 / recall 1.000 / F1 0.998.
+The tutorial notebook (`notebooks/tutorial.ipynb`, committed executed)
+walks from simulating a material through noise, drift, detection,
+refinement, and scoring, ending on a real image. The Python API is
+documented with runnable examples in [docs/api.md](docs/api.md); the
+learned detectors are documented in
+[models/MODEL_CARD.md](models/MODEL_CARD.md).
 
-Everything else regenerates from scratch:
+## Real images
 
-```
-python scripts/generate_sample.py     # rewrite data/sample/*.npz (fixed seeds)
-python scripts/train_unet.py          # retrain, save models/unet_atoms.pt
-python scripts/benchmark_dose.py      # dose sweep, RESULTS table and figure
-pytest                                # 30 tests
-```
+`atomfinder detect your_image.png --method unet --figure overlay.png`
+works on any PNG/TIFF/JPEG. The repository commits one clearly licensed
+experimental image, a HAADF micrograph of aluminium along [001]
+(`data/real/al_001_haadf_wikimedia.png`, Matheustunes, Wikimedia Commons,
+CC BY-SA 4.0; this data license is separate from the MIT code license).
+The tutorial shows the two adaptations it needs: cropping the burned-in
+scale bar and downsampling 3x so the column width matches the training
+regime. There is no ground truth for it, so real-image results are
+qualitative; the model card documents the synthetic-to-real domain gap
+honestly.
 
 ## Repository layout
 
 ```
-src/atomfinder/     simulator, detectors, U-Net, refinement, metrics
-scripts/            generate_sample, train_unet, demo, benchmark_dose
-tests/              30 pytest tests
-data/sample/        three committed synthetic images with ground truth
-models/             committed 143 KB U-Net weights
-figures/, results/  committed outputs of the scripts above
+src/atomfinder/     sim, detect, net, train, refine, metrics, benchmark, plots, real, io, cli
+configs/            nine YAML benchmark configs, fixed seeds
+models/             committed U-Net weights (seg, reg, 5 ablation variants) + model card
+data/sample/        four committed synthetic samples with ground truth
+data/real/          one CC BY-SA experimental image with attribution
+notebooks/          executed tutorial notebook
+docs/               API documentation
+figures/, results/  regenerable outputs of the committed configs
+scripts/            repository figure generation (dose ladder GIF, gallery)
+tests/              72 pytest tests
 ```
 
 ## Scope and limitations
 
-- All data is synthetic, from a deliberately simple incoherent imaging
-  model. No multislice simulation, no real experimental micrographs, and no
-  claim that these numbers transfer to real instruments. On real data the
-  domain gap (contamination, amorphous background, non-Poisson detector
-  noise) would need to be addressed, most likely by fine-tuning on labelled
-  experimental patches.
-- The benchmark varies dose only; lattice geometry stays within the
-  simulator's training distribution. The U-Net's robustness claim is about
-  dose, not arbitrary out-of-distribution structures.
-- Dopant and vacancy labels are simulated but only detection of column
-  positions is evaluated; species classification is not implemented.
+- The imaging model is incoherent Z-contrast with a Gaussian probe. No
+  multislice dynamical scattering, no probe aberrations, no detector MTF.
+  The benchmark measures detector behaviour within this model; absolute
+  numbers will not transfer to any real instrument.
+- Only column position detection is evaluated. Species classification,
+  strain mapping, and counting atoms per column are out of scope.
+- The learned models were trained purely on simulation. On real data,
+  expect the domain gap described in the model card; the committed real
+  image gets a qualitative check only.
+- Drift ground truth uses a first-order approximation (each column shifted
+  by the offset of its own scan row), exact for constant drift and
+  documented in `atomfinder/sim.py`.
 
 ## Author
 
@@ -135,4 +176,6 @@ Aamir Malik
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT for all code and synthetic data. See [LICENSE](LICENSE). The single
+committed real image is CC BY-SA 4.0 with attribution in
+[data/README.md](data/README.md).
