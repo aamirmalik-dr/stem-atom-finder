@@ -10,13 +10,19 @@ __pycache__/
 build/
 dist/
 
-# Large or regenerable data: full datasets stay out, the committed
-# synthetic samples in data/sample/ stay in.
+# Large or regenerable data: full datasets stay out; the committed
+# synthetic samples and the attributed CC BY-SA real image stay in.
 data/*
 !data/README.md
 !data/sample/
 data/sample/*
 !data/sample/*.npz
+!data/real/
+data/real/*
+!data/real/al_001_haadf_wikimedia.png
+
+# Notebook execution noise
+.ipynb_checkpoints/
 
 # Large checkpoints stay out; the small committed model stays in.
 checkpoints/
