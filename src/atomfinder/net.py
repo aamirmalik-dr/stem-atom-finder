@@ -82,18 +82,24 @@ def normalize_image(image: np.ndarray) -> np.ndarray:
     return (image - image.mean()) / (std if std > 0 else 1.0)
 
 
-def predict_heatmap(model: nn.Module, image: np.ndarray) -> np.ndarray:
-    """Run the network on a single image and return the sigmoid heatmap.
+def predict_heatmap(model: nn.Module, image: np.ndarray, activation: str = "sigmoid") -> np.ndarray:
+    """Run the network on a single image and return its heatmap.
 
     Args:
         model: A trained UNet.
         image: 2D image whose sides are multiples of 4 (two poolings).
+        activation: "sigmoid" for the segmentation head, "linear" for the
+            heatmap-regression head (raw output, clipped at zero).
 
     Returns:
-        2D float32 heatmap of per-pixel column probability.
+        2D float32 heatmap of per-pixel column score.
     """
+    if activation not in ("sigmoid", "linear"):
+        raise ValueError(f"unknown activation: {activation!r}")
     model.eval()
     x = torch.from_numpy(normalize_image(image))[None, None]
     with torch.no_grad():
-        logits = model(x)
-    return torch.sigmoid(logits)[0, 0].numpy()
+        logits = model(x)[0, 0]
+    if activation == "sigmoid":
+        return torch.sigmoid(logits).numpy()
+    return np.clip(logits.numpy(), 0.0, None)
