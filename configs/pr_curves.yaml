@@ -1,0 +1,16 @@
+name: pr_curves
+mode: pr_curves
+conditions:
+  - {dose: 2.0}
+  - {dose: 30.0}
+  - {dose: 500.0}
+base_config:
+  size: 256
+  lattice: hexagonal
+  spacing: 14.0
+images_per_condition: 5
+seed: 50
+refine: com
+methods: [log, ncc, unet]
+models:
+  unet: models/unet_seg.pt

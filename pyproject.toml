@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atomfinder"
-version = "0.1.0"
-description = "Atomic column detection in simulated HAADF-STEM images: Laplacian-of-Gaussian baseline vs a compact U-Net, benchmarked across electron dose"
+version = "0.2.0"
+description = "Atomic column detection benchmark and toolkit for HAADF-STEM: materials-preset simulator, five detectors, sub-pixel refinement, and a config-driven benchmark harness"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -15,10 +15,22 @@ dependencies = [
     "scipy>=1.10",
     "matplotlib>=3.7",
     "torch>=2.0",
+    "pyyaml>=6.0",
+    "pillow>=10.0",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0", "ruff>=0.4", "black>=24.0"]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.4",
+    "black>=24.0",
+    "nbclient>=0.9",
+    "nbformat>=5.9",
+    "ipykernel>=6.25",
+]
+
+[project.scripts]
+atomfinder = "atomfinder.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
