@@ -1,7 +1,5 @@
 # stem-atom-finder
 
-*Origin: Originally developed during the 4th Summer School on ML/AI for Electron Microscopy (June 2026); refactored and open-sourced in July 2026.*
-
 A benchmark and toolkit for atomic column detection in HAADF-STEM images.
 It ships a physics-motivated simulator with four materials presets and
 exact ground truth, five detectors (three classical, two learned), two
@@ -181,3 +179,7 @@ Aamir Malik
 MIT for all code and synthetic data. See [LICENSE](LICENSE). The single
 committed real image is CC BY-SA 4.0 with attribution in
 [data/README.md](data/README.md).
+
+---
+
+*Refactored and engineered into this tested, reproducible project in July 2026, from work originally begun at the 4th Summer School on ML/AI for Electron Microscopy (June 2026).*
