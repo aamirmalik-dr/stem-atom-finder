@@ -244,7 +244,9 @@ def _cmd_demo(args: argparse.Namespace) -> None:
     fig.tight_layout()
     figure = Path(args.figure)
     figure.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(figure, dpi=100)
+    # Higher dpi so the short side clears 1080 px for social posts; layout,
+    # colormaps, marker styles and fonts are unchanged.
+    fig.savefig(figure, dpi=130)
     print(f"saved {figure}")
 
     metrics = Path(args.metrics)
