@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "atomfinder"
-version = "0.2.0"
+version = "0.2.1"
 description = "Atomic column detection benchmark and toolkit for HAADF-STEM: materials-preset simulator, five detectors, sub-pixel refinement, and a config-driven benchmark harness"
 readme = "README.md"
 requires-python = ">=3.10"
