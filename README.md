@@ -1,5 +1,7 @@
 # stem-atom-finder
 
+[![ci](https://github.com/aamirmalik-dr/stem-atom-finder/actions/workflows/ci.yml/badge.svg)](https://github.com/aamirmalik-dr/stem-atom-finder/actions/workflows/ci.yml)
+
 A benchmark and toolkit for atomic column detection in HAADF-STEM images.
 It ships a physics-motivated simulator with four materials presets and
 exact ground truth, five detectors (three classical, two learned), two
